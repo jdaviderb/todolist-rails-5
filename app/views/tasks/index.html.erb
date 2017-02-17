@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+          <div class="card-block">
+            <h4 class="card-title">Todo list</h4>
+            <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                New
+              </a>
+
+              <div class="collapse" id="collapseExample">
+                <div class="card card-block">
+                  <%=form_for @task, remote: true do |f|%>
+                    <div class="form-group">
+                        <%=f.label :description%>
+                        <%=f.text_field :description, class: 'form-control', required: true %>
+                    </div>
+                    <div class="form-group">
+                        <%=f.submit 'save', class: 'btn btn-primary'%>
+                    </div>
+                  <%end%>
+                </div>
+              </div>
+
+
+            <table class="table">
+
+                <tbody>
+                    <%@tasks.each do |task|%>
+                    <tr>
+                        <td><%=task.description%></td>
+                        <td align="right">
+                            <%=link_to 'Remove', task_path(task), class: 'btn btn-danger btn-sm', method: :delete, remote: true%>
+
+                            <%=link_to 'Done', task_done_path(task), class: 'btn btn-success btn-sm', method: :put, remote: true%>
+                          
+                        </td>
+                    </tr>
+                    <%end%>
+                   
+                </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    
+    <%if @tasks_done.present? %>
+        <div class="col-lg-6">
+            <div class="card">
+              <div class="card-block">
+                <h4 class="card-title">Done</h4>
+                <table class="table">
+
+                    <tbody>
+                        <%@tasks_done.each do |task|%>
+                        <tr>
+                            <td><%=task.description%></td>
+                            <td align="right">
+                                <%=link_to 'Remove', task_path(task), class: 'btn btn-danger btn-sm', method: :delete, remote: true%>
+                                <%=link_to 'Undone', task_undone_path(task), class: 'btn btn-secondary btn-sm', method: :put, remote: true%>
+                              
+                            </td>
+                        </tr>
+                        <%end%>
+                       
+                    </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+    <%end%>
+
+
+</div>
