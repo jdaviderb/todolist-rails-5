@@ -3,24 +3,21 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:done,:undone,:destroy]
 
   def index
-    @tasks = current_user.tasks.where(done: false)
-    @tasks_done = current_user.tasks.where(done: true)
+    @tasks = current_user.tasks.order(id: :desc)
     @task = Task.new
   end
 
   def done
-    redirect_to tasks_path if @task.update(done: true)
+    redirect_to tasks_path if @task.done!
   end
 
   def undone
-    redirect_to tasks_path if @task.update(done: false)
+    redirect_to tasks_path if @task.undone!
   end
 
   def create
     @task = current_user.tasks.new(task_params)
-    if @task.save
-      redirect_to tasks_path
-    end
+    redirect_to tasks_path  if @task.save
   end
 
   def destroy

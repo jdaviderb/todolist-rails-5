@@ -27,12 +27,24 @@
                 <tbody>
                     <%@tasks.each do |task|%>
                     <tr>
-                        <td><%=task.description%></td>
+                        <td>
+                            <%if task.done%>
+                                <p class="text-line">
+                                    <%=task.description%>        
+                                </p>
+                            <%else%>
+                             <p>
+                                <%=task.description%>x        
+                            </p>
+                            <%end%>
+                        </td>
                         <td align="right">
                             <%=link_to 'Remove', task_path(task), class: 'btn btn-danger btn-sm', method: :delete, remote: true%>
-
-                            <%=link_to 'Done', task_done_path(task), class: 'btn btn-success btn-sm', method: :put, remote: true%>
-                          
+                            <%if task.done%>
+                                <%=link_to 'Undone', task_undone_path(task), class: 'btn btn-secondary btn-sm', method: :put, remote: true%>
+                            <%else%>
+                                <%=link_to 'Done', task_done_path(task), class: 'btn btn-success btn-sm', method: :put, remote: true%>
+                            <%end%>
                         </td>
                     </tr>
                     <%end%>
@@ -42,32 +54,5 @@
           </div>
         </div>
     </div>
-    
-    <%if @tasks_done.present? %>
-        <div class="col-lg-6">
-            <div class="card">
-              <div class="card-block">
-                <h4 class="card-title">Done</h4>
-                <table class="table">
-
-                    <tbody>
-                        <%@tasks_done.each do |task|%>
-                        <tr>
-                            <td><%=task.description%></td>
-                            <td align="right">
-                                <%=link_to 'Remove', task_path(task), class: 'btn btn-danger btn-sm', method: :delete, remote: true%>
-                                <%=link_to 'Undone', task_undone_path(task), class: 'btn btn-secondary btn-sm', method: :put, remote: true%>
-                              
-                            </td>
-                        </tr>
-                        <%end%>
-                       
-                    </tbody>
-                </table>
-              </div>
-            </div>
-        </div>
-    <%end%>
-
 
 </div>
